@@ -333,6 +333,13 @@ jasmineRequire.HtmlReporter = function(j$) {
         function setMenuModeTo(mode) {
             htmlReporterMain.setAttribute("class", "html-reporter " + mode);
         }
+
+        function registerEventListener () {
+            navigationBar.addEventListener('click', function () {
+                window.history.back();
+                navigationBar.removeEventListener('click');
+            });
+        }
     }
 
     return HtmlReporter;
