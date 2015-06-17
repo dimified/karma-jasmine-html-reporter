@@ -48,14 +48,18 @@ jasmineRequire.HtmlReporter = function(j$) {
             pendingSpecCount = 0,
             htmlReporterMain,
             navigationBar,
+            backButton,
             symbols;
 
         this.initialize = function() {
-            navigationBar = createDom("div", {className: "navigation-bar"},
-                createDom("button", {className: "back-button", id: "backButton"},
-                    "BACK"
-                )
-            );
+            backButton = createDom("button", {
+                className: "back-button",
+                id: "backButton"
+            }, "BACK");
+
+            navigationBar = createDom("div", {
+                className: "navigation-bar"
+            }, backButton);
             htmlReporterMain = createDom("div", {className: "html-reporter"},
                 createDom("div", {className: "banner"},
                     createDom("span", {className: "title"}, "Jasmine"),
@@ -67,11 +71,13 @@ jasmineRequire.HtmlReporter = function(j$) {
                     createDom("div", {className: "failures"})
                 )
             );
+
+            backButton.setAttribute('autofocus', 'autofocus');
             getContainer().appendChild(navigationBar);
             getContainer().appendChild(htmlReporterMain);
 
             // Register all defined event listeners
-            registerEventListener();
+            registerEventListeners();
 
             symbols = find(".symbol-summary");
         };
@@ -334,10 +340,17 @@ jasmineRequire.HtmlReporter = function(j$) {
             htmlReporterMain.setAttribute("class", "html-reporter " + mode);
         }
 
-        function registerEventListener () {
+        function registerEventListeners () {
             navigationBar.addEventListener('click', function () {
                 window.history.back();
                 navigationBar.removeEventListener('click');
+            });
+
+            window.addEventListener('keydown', function (e) {
+                if (e.keyCode === 8) {
+                    window.history.back();
+                }
+                window.removeEventListener('keydown');
             });
         }
     }
