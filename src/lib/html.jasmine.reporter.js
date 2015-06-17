@@ -47,9 +47,15 @@ jasmineRequire.HtmlReporter = function(j$) {
             failureCount = 0,
             pendingSpecCount = 0,
             htmlReporterMain,
+            navigationBar,
             symbols;
 
         this.initialize = function() {
+            navigationBar = createDom("div", {className: "navigation-bar"},
+                createDom("button", {className: "back-button", id: "backButton"},
+                    "BACK"
+                )
+            );
             htmlReporterMain = createDom("div", {className: "html-reporter"},
                 createDom("div", {className: "banner"},
                     createDom("span", {className: "title"}, "Jasmine"),
@@ -61,7 +67,11 @@ jasmineRequire.HtmlReporter = function(j$) {
                     createDom("div", {className: "failures"})
                 )
             );
+            getContainer().appendChild(navigationBar);
             getContainer().appendChild(htmlReporterMain);
+
+            // Register all defined event listeners
+            registerEventListener();
 
             symbols = find(".symbol-summary");
         };
